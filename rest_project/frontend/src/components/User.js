@@ -30,19 +30,19 @@ const UserList = ({users}) => {
     return (
         <table>
             <th>
-               Username
+               Username:
             </th>
             <th>
-               First name
+               First name:
             </th>
             <th>
-               Last name
+               Last name:
             </th>
             <th>
-               Email
+               Email:
             </th>
             <th>
-               User is superuser
+               User is superuser:
             </th>
             {users.map((user) => <UserItem user={user} />)}
         </table>
