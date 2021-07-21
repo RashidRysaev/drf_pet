@@ -18,9 +18,9 @@ const UserItem = ({user}) => {
                 {user.email} 
             </td>
             <td>
-                {user.is_superuser} 
+                {String(user.is_superuser)} 
             </td>
-</tr>
+        </tr>
     )
 }
 
