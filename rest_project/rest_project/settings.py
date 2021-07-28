@@ -46,10 +46,25 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "userapp",
+    "todoapp",
 ]
 
 # Auth model
 AUTH_USER_MODEL = "userapp.CustomUser"
+
+# Renderers and Parsers for Rest
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
+        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ], 
+
+    "DEFAULT_PARSER_CLASSES": [
+        "djangorestframework_camel_case.parser.CamelCaseJSONParser",
+    ]
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
