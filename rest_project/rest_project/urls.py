@@ -1,12 +1,13 @@
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 
 from todoapp.views import ProjectModelViewSet, TodoModelViewSet
-from userapp.views import CustomUserModelViewSet
+from userapp.views import CustomUserCustomViewSet
 
 router = DefaultRouter()
-router.register("users", CustomUserModelViewSet)
+
+router.register("users", CustomUserCustomViewSet)  # basename='user' raises an error with two others!
 router.register("projects", ProjectModelViewSet)
 router.register("todos", TodoModelViewSet)
 
