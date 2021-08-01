@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {HashRouter, Route, Redirect, Switch} from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 import UserList from './components/User';
@@ -7,7 +8,7 @@ import ProjectList from './components/Project';
 import TodoList from './components/Todo';
 
 // import FooterPage from './components/footer';
-// import MenuPage from './components/menu';
+import MenuPage from './components/menu';
 
 
 class App extends React.Component {
@@ -57,10 +58,15 @@ class App extends React.Component {
     render() {
       return (
         <div>
-          {/* < MenuPage /> */}
-          < UserList users={this.state.users} />
-          < ProjectList projects={this.state.projects} />
-          < TodoList todos={this.state.todos} />
+          <MenuPage/>
+          <HashRouter>
+            <Switch>
+              <Route exact path='/' component={() => < UserList users={this.state.users} />}/>
+              <Redirect from='/users' to='/' />
+              <Route exact path='/projects' component={() => < ProjectList projects={this.state.projects} />}/>
+              <Route exact path='/todos' component={() => < TodoList todos={this.state.todos} />}/>
+            </Switch>
+          </HashRouter>
           {/* < FooterPage /> */}
         </div>
       )

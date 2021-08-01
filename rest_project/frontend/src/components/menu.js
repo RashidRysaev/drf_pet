@@ -3,6 +3,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 
+import {Link} from 'react-router-dom';
+
 const MenuPage = () => {
 const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -20,7 +22,6 @@ return (
         color: 'blue',
 	}}
 	>
-	<h2>Menu:</h2>
 	<Button
 		aria-controls="simple-menu"
 		aria-haspopup="true"
@@ -43,4 +44,3 @@ return (
 };
 
 export default MenuPage;
-
