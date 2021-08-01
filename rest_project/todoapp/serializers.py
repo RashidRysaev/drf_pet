@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from rest_framework.serializers import (HyperlinkedModelSerializer,
-                                        ModelSerializer)
+from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
 
 from userapp.serializers import CustomUserSerializer
 
@@ -12,7 +11,7 @@ class ProjectSerializer(ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ["title", "url_link", "users"]
+        fields = ["id", "title", "url_link", "users"]
 
 
 class TodoSerializer(ModelSerializer):
