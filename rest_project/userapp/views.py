@@ -1,7 +1,5 @@
-from djangorestframework_camel_case.render import (
-    CamelCaseBrowsableAPIRenderer, CamelCaseJSONRenderer)
-from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
-                                   UpdateModelMixin)
+from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer, CamelCaseJSONRenderer
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.renderers import JSONRenderer
 from rest_framework.viewsets import GenericViewSet
 
