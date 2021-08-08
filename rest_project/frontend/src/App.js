@@ -24,18 +24,23 @@ class App extends React.Component {
       }
     }
 
+
   set_token(token) {
     const cookies = new Cookies()
     cookies.set('token', token)
-    this.setState({'token': token})
+    this.setState({'token': token}, ()=>this.load_data())
   }
+
 
   is_authenticated() {
     return !!this.state.token
   }
 
-  logout() { this.set_token('')
+
+  logout() { 
+    this.set_token('')
   }
+
 
   get_token(login, password) { 
     axios.post('http://127.0.0.1:8000/api-token-auth/', {username: login, password: password}) 
@@ -46,16 +51,31 @@ class App extends React.Component {
     ).catch(error => alert('Неверный логин или пароль'))
   }
 
+
   get_token_from_storage() {
     const cookies = new Cookies() 
     const token = cookies.get('token') 
-    this.setState({'token': token})
+    this.setState({'token': token}, ()=>this.load_data())
   }
 
-  
+
+  get_headers() { 
+    let headers = {
+      'Content-Type': 'application/json' 
+    }
+  if (this.is_authenticated()) 
+    {
+      headers['Authorization'] = 'Token ' + this.state.token
+    }
+    return headers 
+  }
+
 
   load_data() {
-    axios.get('http://localhost:8000/api/users/')
+
+    const headers = this.get_headers()
+
+    axios.get('http://localhost:8000/api/users/', {headers})
     .then(
       response => {
           const users = response.data.results
@@ -63,36 +83,59 @@ class App extends React.Component {
             'users': users 
           })
       }
-    ).catch(error => console.log(error))
-
-
-  axios.get('http://localhost:8000/api/projects/')
-  .then(
-    response => {
-        const projects = response.data.results
-        this.setState({
-          'projects': projects 
-        })
+    ).catch(
+      error => {
+          this.setState({
+              'users': []
+          })
+          console.log(error)
       }
-    ).catch(error => console.log(error))
+  )
 
 
-  axios.get('http://localhost:8000/api/todos/')
-  .then(
-    response => {
-        const todos = response.data.results
-        this.setState({
-          'todos': todos 
-        })
-      }
-    ).catch(error => console.log(error))
+    axios.get('http://localhost:8000/api/projects/', {headers})
+    .then(
+      response => {
+          const projects = response.data.results
+          this.setState({
+            'projects': projects 
+          })
+        }
+      ).catch(
+        error => {
+            this.setState({
+                'projects': []
+            })
+            console.log(error)
+        }
+    )
+
+
+    axios.get('http://localhost:8000/api/todos/', {headers})
+    .then(
+      response => {
+          const todos = response.data.results
+          this.setState({
+            'todos': todos 
+          })
+        }
+      ).catch(
+        error => {
+            this.setState({
+                'todos': []
+            })
+            console.log(error)
+        }
+    )
+
   }
+
 
   componentDidMount() { 
-    this.get_token_from_storage() 
-    this.load_data()
+    this.get_token_from_storage()
   }
 
+  
     render() {
       return (
         <div>
