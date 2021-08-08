@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
-from rest_framework.routers import DefaultRouter, SimpleRouter
+from rest_framework.routers import DefaultRouter
 
 from todoapp.views import ProjectModelViewSet, TodoModelViewSet
 from userapp.views import CustomUserCustomViewSet
