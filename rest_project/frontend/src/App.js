@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 import { BrowserRouter, HashRouter, Route, Redirect, Switch, Link } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
@@ -18,51 +19,78 @@ class App extends React.Component {
       this.state = {
         'users': [],
         'projects': [],
-        'todos': []
+        'todos': [],
+        'token': '',
       }
     }
 
-  componentDidMount() { 
-    axios.get('http://localhost:8000/api/users/')
-      .then(
-        response => {
-            const users = response.data.results
-            this.setState({
-              'users': users 
-            })
-        }
-    ).catch(error => console.log(error))
+  set_token(token) {
+    const cookies = new Cookies()
+    cookies.set('token', token)
+    this.setState({'token': token})
+  }
 
+  is_authenticated() {
+    return !!this.state.token
+  }
 
-    axios.get('http://localhost:8000/api/projects/')
-    .then(
-      response => {
-          const projects = response.data.results
-          this.setState({
-            'projects': projects 
-          })
-      }
-    ).catch(error => console.log(error))
-
-
-    axios.get('http://localhost:8000/api/todos/')
-    .then(
-      response => {
-          const todos = response.data.results
-          this.setState({
-            'todos': todos 
-          })
-      }
-    ).catch(error => console.log(error))
+  logout() { this.set_token('')
   }
 
   get_token(login, password) { 
     axios.post('http://127.0.0.1:8000/api-token-auth/', {username: login, password: password}) 
     .then(
       response => {
-        console.log(response.data)
+        this.set_token(response.data['token'])
       }
     ).catch(error => alert('Неверный логин или пароль'))
+  }
+
+  get_token_from_storage() {
+    const cookies = new Cookies() 
+    const token = cookies.get('token') 
+    this.setState({'token': token})
+  }
+
+  
+
+  load_data() {
+    axios.get('http://localhost:8000/api/users/')
+    .then(
+      response => {
+          const users = response.data.results
+          this.setState({
+            'users': users 
+          })
+      }
+    ).catch(error => console.log(error))
+
+
+  axios.get('http://localhost:8000/api/projects/')
+  .then(
+    response => {
+        const projects = response.data.results
+        this.setState({
+          'projects': projects 
+        })
+      }
+    ).catch(error => console.log(error))
+
+
+  axios.get('http://localhost:8000/api/todos/')
+  .then(
+    response => {
+        const todos = response.data.results
+        this.setState({
+          'todos': todos 
+        })
+      }
+    ).catch(error => console.log(error))
+  }
+
+  componentDidMount() { 
+    this.get_token_from_storage() 
+    this.load_data()
   }
 
     render() {
@@ -82,7 +110,7 @@ class App extends React.Component {
                   <Link to='/todos'>Todos</Link>
                 </li>
                 <li>
-                  <Link to='/login'>Login</Link>
+                {this.is_authenticated() ? <button onClick={()=>this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
                 </li>
               </ul>
             </nav>
