@@ -20,7 +20,7 @@ class TestCustomUser(APITestCase):
         request = factory.post("/api/users/", {"username": "JohnSmith", "email": "johnsmith@mail.io"}, format="json")
         view = CustomUserCustomViewSet.as_view({"post": "create"})
         response = view(request)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_create_admin(self):
         factory = APIRequestFactory()
