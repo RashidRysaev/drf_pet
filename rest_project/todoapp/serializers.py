@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
+
 from userapp.serializers import CustomUserSerializer
 
 from .models import Project, Todo
