@@ -8,6 +8,7 @@ import UserList from './components/User';
 import ProjectList from './components/Project';
 import TodoList from './components/Todo';
 import LoginForm from './components/Auth';
+import ProjectForm from './components/ProjectForm';
 
 // import FooterPage from './components/footer';
 // import MenuPage from './components/menu';
@@ -61,13 +62,57 @@ class App extends React.Component {
 
   get_headers() { 
     let headers = {
-      'Content-Type': 'application/json' 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json; version=2.0'
     }
   if (this.is_authenticated()) 
     {
       headers['Authorization'] = 'Token ' + this.state.token
     }
     return headers 
+  }
+
+
+  deleteProject(id) {
+    const headers = this.get_headers()
+
+    axios.delete(`http://localhost:8000/api/projects/${id}`, {headers})
+    .then(
+      response => {
+        this.load_data()
+      }
+    ).catch(
+      error => {
+        console.log(error)
+      }
+    )
+  }
+
+
+  createProject(title, users) {
+
+    if (!title || users.length==0) {
+      console.log("Empty params:", title, users)
+      return;
+    }
+
+    const headers = this.get_headers()
+
+    axios.post('http://127.0.0.1:8000/api/projects/',
+        {
+            "title": title,
+            "users": users
+        },
+        {headers})
+    .then(
+        response => {
+            this.load_data()
+        }
+    ).catch(
+        error => {
+            console.log(error)
+        }
+    )
   }
 
 
@@ -160,7 +205,8 @@ class App extends React.Component {
             <Switch>
               <Route exact path='/' component={() => < UserList users={this.state.users} />}/>
               <Redirect from='/users' to='/' />
-              <Route exact path='/projects' component={() => < ProjectList projects={this.state.projects} />}/>
+              <Route exact path='/projects' component={() => < ProjectList projects={this.state.projects} deleteProject={ (id)=>this.deleteProject(id)} />}/>
+              <Route exact path='/projects/create' component={() => <ProjectForm users={this.state.users} createProject={(title, users) => this.createProject(title, users)}/>} />
               <Route exact path='/todos' component={() => < TodoList todos={this.state.todos} />}/>
               <Route exact path='/login' component={() => <LoginForm get_token={(login, password) => this.get_token(login, password)} />} />
             </Switch>
