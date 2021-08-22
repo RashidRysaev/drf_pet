@@ -4,9 +4,11 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from graphene_django.views import GraphQLView
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
+
 from todoapp.views import ProjectModelViewSet, TodoModelViewSet
 from userapp.views import CustomUserCustomViewSet
 
@@ -33,6 +35,7 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("api-token-auth/", obtain_auth_token),
     path("api/", include(router.urls)),
+    path("graphql/", GraphQLView.as_view(graphiql=True)),
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$", schema_view.without_ui(cache_timeout=0), name="schema-json"
     ),  # getting docs as .json / .yaml file

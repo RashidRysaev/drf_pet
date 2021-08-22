@@ -21,7 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-su%j_m=kodh3p*f3x6y-*d)a6qbm8)somd(4_ym^)bwq0nmd2%"
+SECRET_KEY = (
+    "django-insecure-su%j_m=kodh3p*f3x6y-*d)a6qbm8)somd(4_ym^)bwq0nmd2%"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     "drf_yasg",
     "userapp",
     "todoapp",
+    "graphene_django",
 ]
 
 # Auth model
@@ -61,8 +64,12 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend"
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
+    ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
@@ -74,6 +81,8 @@ REST_FRAMEWORK = {
     #     "djangorestframework_camel_case.parser.CamelCaseJSONParser",
     # ]
 }
+
+GRAPHENE = {"SCHEMA": "rest_project.schema.schema"}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
